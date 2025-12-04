@@ -2,10 +2,15 @@ import os
 import sys
 
 def main():
-    # 1. 获取用户输入的路径
-    target_dir = input("请输入要搜索的文件夹路径: ").strip()
+    # 1. 获取路径
+    # 修改点：先检查命令行参数，如果没有再提示输入
+    if len(sys.argv) > 1:
+        # sys.argv[0] 是脚本文件名，sys.argv[1] 是第一个参数
+        target_dir = sys.argv[1]
+    else:
+        target_dir = input("请输入要搜索的文件夹路径: ").strip()
 
-    # 去除可能存在的引号（防止用户直接拖拽路径进终端带有引号）
+    # 去除可能存在的引号（防止用户直接拖拽路径进终端带有引号，或者命令行传参带有残留引号）
     target_dir = target_dir.replace('"', '').replace("'", "")
 
     # 2. 验证路径有效性
@@ -42,6 +47,7 @@ def main():
         print(f" - {file_path}")
 
     # 5. 确认删除
+    # 注意：即使是通过命令行参数传入路径，为了安全起见，依然保留了确认步骤
     confirm = input("\n是否确认删除以上文件? (输入 y 确认，其他键取消): ").lower()
 
     if confirm == 'y':
